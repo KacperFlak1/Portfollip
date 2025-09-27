@@ -1,37 +1,149 @@
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #111;
+:root{
+  --bg: #0a0a0c;
+  --panel: #0f0f12;
+  --magenta-1: #ff6ee7;    /* light magenta */
+  --magenta-2: #a100ff;    /* deeper magenta for accents */
+  --muted: #bfb8c6;
+  --glass: rgba(255,255,255,0.03);
+  --shadow: 0 10px 30px rgba(0,0,0,0.7);
+  --max-width: 1100px;
+}
+
+/* Reset */
+*{box-sizing:border-box}
+html,body,#app{height:100%}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:var(--bg);
   color: #eee;
-  line-height: 1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow:auto;
 }
 
-header {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: #222;
+/* Canvas fills background */
+canvas#bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  display:block;
+  background: radial-gradient(1200px circle at 15% 20%, rgba(161,0,255,0.08), transparent 6%),
+              radial-gradient(900px circle at 85% 70%, rgba(255,110,231,0.06), transparent 8%),
+              linear-gradient(180deg, #05050a 0%, #0a0a0c 100%);
 }
 
-h1 {
-  margin: 0;
-  font-size: 2.5rem;
+/* UI sits above canvas */
+.ui{position:relative;z-index:5;max-width:var(--max-width);margin:0 auto;padding:32px}
+
+/* Top nav */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 0;
+  color:var(--muted);
+}
+.topbar .brand{
+  font-weight:700;
+  letter-spacing:0.6px;
+  color:var(--magenta-1);
+  text-shadow:0 4px 18px rgba(255,110,231,0.15);
+}
+.topbar .navlinks a{
+  margin-left:18px;
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:600;
+  opacity:0.9;
+}
+.topbar .navlinks a:hover{
+  color:var(--magenta-1);
+  text-shadow:0 6px 26px rgba(161,0,255,0.08);
 }
 
-main {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+/* Hero */
+.hero{
+  margin-top:30px;
+  padding:48px;
+  border-radius:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px) saturate(120%);
+}
+.title{
+  margin:0 0 8px;
+  font-size: clamp(28px, 5vw, 56px);
+  line-height:1.02;
+  color: white;
+  text-shadow:
+    0 6px 40px rgba(161,0,255,0.12),
+    0 0 12px rgba(255,110,231,0.06);
+}
+.tagline{
+  margin:0 0 16px;
+  color:var(--muted);
+}
+.cta-row{display:flex;gap:12px;margin-top:18px}
+.cta{
+  padding:10px 16px;border-radius:10px;text-decoration:none;
+  background: linear-gradient(90deg, rgba(161,0,255,0.15), rgba(255,110,231,0.08));
+  color:var(--magenta-1);
+  font-weight:700;
+  box-shadow: 0 6px 24px rgba(161,0,255,0.06);
+  border: 1px solid rgba(255,110,231,0.06);
+}
+.cta.ghost{
+  background: transparent;
+  color:var(--muted);
+  border: 1px solid rgba(255,255,255,0.04);
 }
 
-section {
-  margin-bottom: 2.5rem;
+/* Main content */
+.content{margin-top:28px}
+.panel{
+  margin:28px 0;
+  padding:20px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));
+  border: 1px solid rgba(255,255,255,0.02);
 }
 
-.project {
-  padding: 1rem;
-  margin: 0.5rem 0;
-  background: #333;
-  border-radius: 8px;
+/* Project cards — 3D tilt effect */
+.cards{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:16px;
+  margin-top:14px;
+}
+.card{
+  padding:18px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(20,12,20,0.6), rgba(10,8,12,0.6));
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 18px rgba(161,0,255,0.03) inset;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255,110,231,0.03);
+}
+.card h3{margin:0 0 8px;color:var(--magenta-1)}
+.card p{margin:0;color:var(--muted);font-size:0.95rem}
+
+/* Footer */
+.footer{padding:28px 0;text-align:center;color:var(--muted);}
+
+/* Neon glows for small accents */
+.glow{
+  text-shadow:
+    0 6px 18px rgba(161,0,255,0.14),
+    0 0 48px rgba(255,110,231,0.08);
 }
 
+/* mobile tweaks */
+@media (max-width:700px){
+  .hero{padding:20px}
+  .topbar .navlinks{display:none}
+  .ui{padding:16px}
+}

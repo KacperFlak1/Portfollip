@@ -124,6 +124,38 @@ const g = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  // Custom cursor
+const cursor = document.querySelector('.custom-cursor');
+let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
+let pos = { x: mouse.x, y: mouse.y };
+
+// Track mouse
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+  cursor.classList.add('move');
+});
+
+// Animate cursor smoothly
+function cursorAnimate(){
+  pos.x += (mouse.x - pos.x) * 0.18;
+  pos.y += (mouse.y - pos.y) * 0.18;
+  cursor.style.transform = `translate(${pos.x}px, ${pos.y}px) translate(-50%, -50%)`;
+  requestAnimationFrame(cursorAnimate);
+}
+requestAnimationFrame(cursorAnimate);
+
+// Hover effects for interactive elements
+const interactiveEls = document.querySelectorAll('.cta, .card, .navlinks a');
+interactiveEls.forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  el.addEventListener('mousedown', () => cursor.classList.add('click'));
+  el.addEventListener('mouseup', () => cursor.classList.remove('click'));
+});
+
+  
   // year
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();

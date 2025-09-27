@@ -1,86 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kacper — Portfolio</title>
-
-  <link rel="stylesheet" href="style.css" />
-  <!-- GSAP (global) for animations -->
- <!-- head (keep this) -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
-<!-- at the end of body -->
-<script type="module" src="script.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 </head>
 <body>
-  <div id="app">
-    <canvas id="bg"></canvas>
 
-    <div class="ui">
-      <nav class="topbar">
-        <div class="brand">Kacper</div>
-        <div class="navlinks">
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </nav>
-
+<canvas id="bg"></canvas>
 <div class="custom-cursor"></div>
 
-
-      
-      <header class="hero">
-        <h1 class="title">Kacper — Creator of delightful code</h1>
-        <p class="tagline">Node · Three.js · UI/UX · Pixel art vibes</p>
-        <div class="cta-row">
-          <a class="cta" href="#projects">View Work</a>
-          <a class="cta ghost" href="#contact">Contact</a>
-        </div>
-      </header>
-
-      <main class="content">
-        <section id="about" class="panel">
-          <h2>About</h2>
-          <p>Full-stack developer who likes neon, orbital objects, and satisfying animations.</p>
-        </section>
-
-        <section id="projects" class="panel projects">
-          <h2>Projects</h2>
-          <div class="cards">
-            <article class="card" data-index="0">
-              <h3>Project One</h3>
-              <p>React + Node portfolio UI — animated and responsive.</p>
-            </article>
-            <article class="card" data-index="1">
-              <h3>Project Two</h3>
-              <p>God-like tycoon prototype — hover reveals info.</p>
-            </article>
-            <article class="card" data-index="2">
-              <h3>Project Three</h3>
-              <p>Pixel-art platformer UI & tools.</p>
-            </article>
-          </div>
-        </section>
-
-        <section id="contact" class="panel">
-          <h2>Contact</h2>
-          <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
-          <p>GitHub: <a href="https://github.com/yourname" target="_blank" rel="noopener">yourname</a></p>
-        </section>
-      </main>
-
-      <footer class="footer">
-        <small>© <span id="year"></span> Kacper — black + magenta vibes</small>
-      </footer>
+<div class="ui">
+  <div class="topbar">
+    <div class="brand">Kacper</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
     </div>
   </div>
 
-  <!-- Three.js + helpers imported as modules from CDN -->
-  <script type="module" src="script.js"></script>
+  <section class="hero">
+    <h1 class="title">Hi, I'm Kacper</h1>
+    <p class="tagline">I create interactive web experiences</p>
+    <div class="cta-row">
+      <a href="#projects" class="cta">View My Work</a>
+      <a href="#contact" class="cta ghost">Contact Me</a>
+    </div>
+  </section>
+
+  <section class="content" id="projects">
+    <h2>My Projects</h2>
+    <div class="cards">
+      <a href="https://example.com/project1" target="_blank" class="card">
+        <h3>Project 1</h3>
+        <p>Awesome web app project</p>
+      </a>
+      <a href="https://example.com/project2" target="_blank" class="card">
+        <h3>Project 2</h3>
+        <p>Creative portfolio website</p>
+      </a>
+      <a href="https://example.com/project3" target="_blank" class="card">
+        <h3>Project 3</h3>
+        <p>Interactive 3D experience</p>
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    &copy; <span id="year"></span> Kacper
+  </footer>
+</div>
+
+<script type="module" src="script.js"></script>
 </body>
 </html>
-
-
-

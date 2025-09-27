@@ -1,38 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kacper | Portfolio</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kacper — Portfolio</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <!-- GSAP (global) for animations -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Hi, I'm Kacper</h1>
-    <p>Full-stack Developer & Designer</p>
-  </header>
+  <div id="app">
+    <canvas id="bg"></canvas>
 
-  <main>
-    <section id="about">
-      <h2>About Me</h2>
-      <p>Short bio goes here...</p>
-    </section>
+    <div class="ui">
+      <nav class="topbar">
+        <div class="brand">Kacper</div>
+        <div class="navlinks">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
 
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="project">Project 1</div>
-      <div class="project">Project 2</div>
-    </section>
+      <header class="hero">
+        <h1 class="title">Kacper — Creator of delightful code</h1>
+        <p class="tagline">Node · Three.js · UI/UX · Pixel art vibes</p>
+        <div class="cta-row">
+          <a class="cta" href="#projects">View Work</a>
+          <a class="cta ghost" href="#contact">Contact</a>
+        </div>
+      </header>
 
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Email: you@example.com</p>
-      <p><a href="https://github.com/yourname">GitHub</a></p>
-    </section>
-  </main>
+      <main class="content">
+        <section id="about" class="panel">
+          <h2>About</h2>
+          <p>Full-stack developer who likes neon, orbital objects, and satisfying animations.</p>
+        </section>
 
-  <script src="script.js"></script>
+        <section id="projects" class="panel projects">
+          <h2>Projects</h2>
+          <div class="cards">
+            <article class="card" data-index="0">
+              <h3>Project One</h3>
+              <p>React + Node portfolio UI — animated and responsive.</p>
+            </article>
+            <article class="card" data-index="1">
+              <h3>Project Two</h3>
+              <p>God-like tycoon prototype — hover reveals info.</p>
+            </article>
+            <article class="card" data-index="2">
+              <h3>Project Three</h3>
+              <p>Pixel-art platformer UI & tools.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="contact" class="panel">
+          <h2>Contact</h2>
+          <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+          <p>GitHub: <a href="https://github.com/yourname" target="_blank" rel="noopener">yourname</a></p>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <small>© <span id="year"></span> Kacper — black + magenta vibes</small>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Three.js + helpers imported as modules from CDN -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
-
 

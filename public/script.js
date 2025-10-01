@@ -1,87 +1,159 @@
-:root{
-  --bg: #0a0a0c;
-  --panel: #0f0f12;
-  --magenta-1: #ff6ee7;
-  --magenta-2: #a100ff;
-  --muted: #bfb8c6;
-  --glass: rgba(255,255,255,0.03);
-  --shadow: 0 10px 30px rgba(0,0,0,0.7);
-  --max-width: 1100px;
+// Set current year in footer
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('year').textContent = new Date().getFullYear();
+});
+
+// Custom cursor functionality
+const cursor = document.querySelector('.custom-cursor');
+if (cursor) {
+  let mouseX = 0, mouseY = 0;
+  let cursorX = 0, cursorY = 0;
+  
+  // Track mouse position
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+  
+  // Smooth cursor animation
+  function animateCursor() {
+    const speed = 0.15;
+    cursorX += (mouseX - cursorX) * speed;
+    cursorY += (mouseY - cursorY) * speed;
+    
+    cursor.style.left = cursorX + 'px';
+    cursor.style.top = cursorY + 'px';
+    
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+  
+  // Add hover effects
+  const hoverElements = document.querySelectorAll('a, .card, button');
+  hoverElements.forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    el.addEventListener('mousedown', () => cursor.classList.add('click'));
+    el.addEventListener('mouseup', () => cursor.classList.remove('click'));
+  });
+  
+  // Hide cursor when leaving window
+  document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+  document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
 }
 
-/* Reset */
-*{box-sizing:border-box}
-html,body,#app{height:100%}
-body{
-  margin:0;
-  font-family:Inter,system-ui,sans-serif;
-  background:var(--bg);
-  color:#eee;
-  overflow:auto;
+// Three.js background animation
+if (typeof THREE !== 'undefined') {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ 
+    canvas: document.getElementById('bg'), 
+    alpha: true,
+    antialias: true
+  });
+  
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  
+  // Create floating particles
+  const particleCount = 150;
+  const particles = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+  
+  const color1 = new THREE.Color(0xa100ff); // --magenta-2
+  const color2 = new THREE.Color(0xff6ee7); // --magenta-1
+  
+  for (let i = 0; i < particleCount; i++) {
+    const i3 = i * 3;
+    
+    // Random positions
+    positions[i3] = (Math.random() - 0.5) * 20;
+    positions[i3 + 1] = (Math.random() - 0.5) * 20;
+    positions[i3 + 2] = (Math.random() - 0.5) * 20;
+    
+    // Random colors between the two magenta shades
+    const mixedColor = color1.clone().lerp(color2, Math.random());
+    colors[i3] = mixedColor.r;
+    colors[i3 + 1] = mixedColor.g;
+    colors[i3 + 2] = mixedColor.b;
+  }
+  
+  particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  
+  const material = new THREE.PointsMaterial({
+    size: 0.05,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.6,
+    blending: THREE.AdditiveBlending
+  });
+  
+  const particleSystem = new THREE.Points(particles, material);
+  scene.add(particleSystem);
+  
+  camera.position.z = 5;
+  
+  // Animation loop
+  function animate() {
+    requestAnimationFrame(animate);
+    
+    // Rotate particle system
+    particleSystem.rotation.x += 0.001;
+    particleSystem.rotation.y += 0.002;
+    
+    // Move camera slightly based on mouse position
+    const mouseInfluence = 0.0005;
+    camera.position.x = (mouseX - window.innerWidth / 2) * mouseInfluence;
+    camera.position.y = -(mouseY - window.innerHeight / 2) * mouseInfluence;
+    camera.lookAt(scene.position);
+    
+    renderer.render(scene, camera);
+  }
+  animate();
+  
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
 }
 
-/* Canvas background */
-canvas#bg{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-  display:block;
-  background: radial-gradient(1200px circle at 15% 20%, rgba(161,0,255,0.08), transparent 6%),
-              radial-gradient(900px circle at 85% 70%, rgba(255,110,231,0.06), transparent 8%),
-              linear-gradient(180deg, #05050a 0%, #0a0a0c 100%);
-}
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  });
+});
 
-/* Custom cursor */
-.custom-cursor{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--magenta-1);
-  box-shadow: 0 0 6px rgba(255,110,231,0.5), 0 0 12px rgba(161,0,255,0.3);
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.12s ease, width 0.15s ease, height 0.15s ease, background 0.25s ease, box-shadow 0.25s ease;
-}
-.custom-cursor.hover{
-  width: 34px;
-  height: 34px;
-  background: rgba(255,110,231,0.4);
-  box-shadow: 0 0 20px rgba(255,110,231,0.6), 0 0 40px rgba(161,0,255,0.4);
-}
-.custom-cursor.click{
-  width: 26px;
-  height: 26px;
-  background: var(--magenta-2);
-  box-shadow: 0 0 16px rgba(161,0,255,0.6),0 0 30px rgba(255,110,231,0.5);
-}
+// Add scroll-based animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
 
-/* UI elements */
-.ui{position:relative;z-index:5;max-width:var(--max-width);margin:0 auto;padding:32px}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 0;color:var(--muted);}
-.topbar .brand{font-weight:700;color:var(--magenta-1);}
-.topbar .navlinks a{margin-left:18px;text-decoration:none;color:var(--muted);font-weight:600;transition: transform .18s ease, text-shadow .25s ease;}
-.topbar .navlinks a:hover{color:var(--magenta-1); text-shadow:0 8px 40px rgba(161,0,255,0.12); transform: translateY(-2px);}
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.transform = 'translateY(0)';
+      entry.target.style.opacity = '1';
+    }
+  });
+}, observerOptions);
 
-/* Hero */
-.hero{margin-top:30px;padding:48px;border-radius:14px;background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));box-shadow: var(--shadow);backdrop-filter: blur(6px) saturate(120%);}
-.title{margin:0 0 8px;font-size: clamp(28px, 5vw, 56px);}
-.tagline{margin:0 0 16px;color:var(--muted);}
-.cta-row{display:flex;gap:12px;margin-top:18px}
-.cta{padding:10px 16px;border-radius:10px;text-decoration:none;background: linear-gradient(90deg, rgba(161,0,255,0.15), rgba(255,110,231,0.08));color:var(--magenta-1);font-weight:700;transition: transform .25s ease, box-shadow .28s ease;}
-.cta:hover{transform: translateY(-4px) scale(1.02);color:white;box-shadow:0 20px 60px rgba(255,110,231,0.14), inset 0 0 40px rgba(161,0,255,0.04);}
-.cta.ghost{background: transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04);}
-
-/* Project cards */
-.cards{display:grid;grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px;margin-top:14px;}
-.card{padding:18px;border-radius:12px;background: linear-gradient(180deg, rgba(20,12,20,0.6), rgba(10,8,12,0.6));box-shadow: 0 8px 30px rgba(0,0,0,0.6),0 0 18px rgba(161,0,255,0.03) inset;cursor:pointer; text-decoration:none; color:inherit; display:block; transform-style: preserve-3d; transition: transform 0.25s ease, box-shadow 0.25s ease;}
-.card h3{margin:0 0 8px;color:var(--magenta-1)}
-.card p{margin:0;color:var(--muted);font-size:0.95rem}
-
-/* Footer */
-.footer{padding:28px 0;text-align:center;color:var(--muted);}
+// Observe cards for animation
+document.querySelectorAll('.card').forEach(card => {
+  card.style.transform = 'translateY(30px)';
+  card.style.opacity = '0.5';
+  card.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
+  observer.observe(card);
+});
